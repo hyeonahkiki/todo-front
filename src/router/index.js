@@ -1,6 +1,9 @@
+// django에서 url.py와 같은느낌
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+// 파일을 불러왔다.
+import Login from '../views/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -10,13 +13,11 @@ const routes = [
     name: 'home',
     component: Home
   },
+  // 새로운 경로 생성
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'login',
+    component: Login
   }
 ]
 

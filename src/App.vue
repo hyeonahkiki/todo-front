@@ -2,9 +2,12 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/login">login</router-link>
     </div>
-    <router-view/>
+    <!-- 여기가 계속 바뀌는 구간 -->
+    <div class="container">
+      <router-view/>
+    </div>
   </div>
 </template>
 

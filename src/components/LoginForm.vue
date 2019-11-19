@@ -55,10 +55,10 @@ export default {
         axios.post('http://localhost:8000/api-token-auth/', this.credential)
         .then((res)=>{
           this.loading = true
-          res.data.token
+   
           // session이라는 공간이 생김
           this.$session.start()
-          // ????????????????
+          // jwt라는 이름에 res.data.token을 저장한다.
           this.$session.set('jwt', res.data.token)
           //여기서는 home으로
           router.push('/')

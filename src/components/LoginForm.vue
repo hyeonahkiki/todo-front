@@ -4,6 +4,12 @@
       <span class="sr-only">Loading...</span>
     </div>
     <div v-else class="login-div col-6 offset-3">
+        <!-- 에러가 있을때만 보여주면 됨 -->
+      <div v-if="errors.length" class="error-list alert alert-danger">
+        <!-- for문을 몇번 돌았는지에 대한 idx -->
+        <!-- vue validator를 활용해서 검증할 수도 있다. -->
+        <div v-for="(error, idx) in errors" :key="idx">{{error}}</div>
+      </div>
       <div class="form-group">
         <!-- for는 뭐랑 연결시킬지 -->
         <label for="id">ID</label>
@@ -38,27 +44,44 @@ export default {
         password: '',
       },
       loading: false,
+      errors: [],
     }
   },
   methods: {
     login(){
-      console.log('로그인시도!!')
-      axios.post('http://localhost:8000/api-token-auth/', this.credential)
-      .then((res)=>{
-        this.loading = true
-        res.data.token
-        // session이라는 공간이 생김
-        this.$session.start()
-        // ????????????????
-        this.$session.set('jwt', res.data.token)
-        //여기서는 home으로
-        router.push('/')
-      })
-      .catch((e)=>{
-        this.loading = true
-        console.log(e)
-      })
+      // checkForm이 true이면
+      if (this.checkForm()){
+        console.log('로그인시도!!')
+        axios.post('http://localhost:8000/api-token-auth/', this.credential)
+        .then((res)=>{
+          this.loading = true
+          res.data.token
+          // session이라는 공간이 생김
+          this.$session.start()
+          // ????????????????
+          this.$session.set('jwt', res.data.token)
+          //여기서는 home으로
+          router.push('/')
+        })
+        .catch((e)=>{
+          this.loading = true
+          console.log(e)
+        })
+      }
+    },
+    // 사용자가 넣은 input을 검증하는 함수(django에서는 검증이 바로됬는데
+    // 여기는 분리 되어어서 따로 검증 필요)
+    checkForm(){
+      this.errors = []
+      if (this.credential.password.length < 8){this.errors.push("비밀번호는 8글자가 넘어야합니다.")}
+      //  앞에 느낌표는: 없다면
+      if (!this.credential.username){this.errors.push('아이디를 입력해주세요.')}
+      console.log(this.errors)
+      if(this.errors.length ===0){
+        return true
+      }
     }
+
   }
 }
 </script>

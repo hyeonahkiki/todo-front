@@ -26,6 +26,9 @@
 
 <script>
 import axios from 'axios'
+// index.js까지 쓰지 않아도 자동으로 불러와진다.
+import router from '../router'
+
 export default {
   // 데이터는 다른곳에서 접근이 안되고 LoginForm안에서만 접근가능
   data: function(){
@@ -43,7 +46,13 @@ export default {
       axios.post('http://localhost:8000/api-token-auth/', this.credential)
       .then((res)=>{
         this.loading = true
-        console.log(res)
+        res.data.token
+        // session이라는 공간이 생김
+        this.$session.start()
+        // ????????????????
+        this.$session.set('jwt', res.data.token)
+        //여기서는 home으로
+        router.push('/')
       })
       .catch((e)=>{
         this.loading = true
